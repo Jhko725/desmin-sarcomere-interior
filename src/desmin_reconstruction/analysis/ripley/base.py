@@ -6,6 +6,29 @@ from tqdm import tqdm
 from desmin_reconstruction.utils.math import n_sphere_volume
 
 
+def neighbor_distances_and_weights(
+    point: Float[np.ndarray, " dim"],
+    neighbors: Float[np.ndarray, "neighbors dim"],
+    sides: Float[np.ndarray, " dim"],
+    edge_correction: bool,
+) -> tuple[Float[np.ndarray, "neighbors dim"], Float[np.ndarray, " neighbors"]]:
+    """Given a center point and a set of points to compute its nearby neighbors to,
+    return the displacement vectors from the point to all its neighbors with in given
+    radius. Additionally, return the weight values to correct for edge effects.
+
+    If edge_correction=False, the weights will be an array of ones. Otherwise, the
+    weights will be computed using Miles-Lantuejoul-Stoyan-Hanisch translation-corrected
+    estimator."""
+    displacements = neighbors - point
+    weights = np.ones_like(displacements, shape=(displacements.shape[0],))
+    if edge_correction:
+        vol_intersection: Float[np.ndarray, " neighbors"] = np.prod(
+            sides - np.abs(displacements), axis=-1
+        )
+        weights = weights / vol_intersection
+    return displacements, weights
+
+
 def ripley_K_per_point(
     points_tree: scspatial.KDTree,
     r: Float[np.ndarray, ""],
@@ -17,14 +40,10 @@ def ripley_K_per_point(
     for i, point in enumerate(points_tree.data):
         in_range_inds[i].remove(i)  # Remove self counting
         neighbors = points_tree.data[in_range_inds[i]]
-        k_ij = np.ones(len(neighbors))
-        if edge_correction:
-            dx = neighbors - point
-            vol_intersection: Float[np.ndarray, " neighbors"] = np.prod(
-                sides - np.abs(dx), axis=-1
-            )
-            k_ij = k_ij / vol_intersection
-        K_i.append(np.sum(k_ij))
+        _, weights = neighbor_distances_and_weights(
+            point, neighbors, sides, edge_correction
+        )
+        K_i.append(np.sum(weights))
     return np.asarray(K_i)
 
 

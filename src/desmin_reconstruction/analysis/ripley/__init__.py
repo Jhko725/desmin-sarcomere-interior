@@ -7,4 +7,7 @@ from .base import (
     ripley_K as ripley_K,
     ripley_L_from_K as ripley_L_from_K,
 )
-from .getisfranklin import getis_franklin_L as getis_franklin_L
+from .getisfranklin import (
+    getis_franklin_L as getis_franklin_L,
+    getis_franklin_L_bivariate as getis_franklin_L_bivariate,
+)

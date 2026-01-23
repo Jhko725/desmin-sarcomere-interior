@@ -1,49 +1,8 @@
 import numpy as np
 import scipy.spatial as scspatial
 from jaxtyping import Float
-from tqdm import tqdm
 
-
-def angular_ripley_H(
-    points: Float[np.ndarray, "N 3"],
-    r: float = 1.0,
-    num_bins: int = 100,
-    sides: Float[np.ndarray, "2"] = np.array([4.0, 4.0]),
-    edge_correction: bool = True,
-):
-    n_points = points.shape[0]
-    sides = np.asarray(sides)
-    vol = np.prod(sides)
-    tree = scspatial.KDTree(points)
-    in_range_indices = tree.query_ball_tree(tree, r)
-
-    bins = np.linspace(-np.pi, np.pi, num_bins)
-    k_angular = np.zeros_like(bins, shape=(len(bins) - 1,))
-
-    for i, (indices, pt) in enumerate(zip(in_range_indices, tqdm(points))):
-        nn = points[[j for j in indices if j != i]]
-        shift = np.abs(nn - pt)
-        if edge_correction:
-            vol_intersection = np.prod(sides - shift, axis=-1)
-            k_per_point = np.ones(len(nn)) / vol_intersection
-        else:
-            k_per_point = np.ones(len(nn)) / vol
-
-        angles = np.atan2(nn[:, 1] - pt[1], nn[:, 0] - pt[0])
-
-        k_angular = (
-            k_angular
-            + np.histogram(angles, bins, weights=k_per_point, density=False)[0]
-        )
-
-    delta_angle = bins[1] - bins[0]
-    lambda_sq_inv = (vol * vol) / (n_points * (n_points - 1))
-    ripley_K = (2 * np.pi / delta_angle) * lambda_sq_inv * k_angular
-    ripley_L = np.sqrt(ripley_K / np.pi)
-    ripley_H = ripley_L - r
-
-    bin_centers = (bins[:-1] + bins[1:]) / 2
-    return bin_centers, ripley_H
+from .base import neighbor_distances_and_weights, ripley_L_from_K
 
 
 def cartesian_to_spherical(
@@ -53,6 +12,44 @@ def cartesian_to_spherical(
     theta = np.atan2(xyz[:, 1], xyz[:, 0])
     phi = np.acos(xyz[:, 2] / r)
     return r, theta, phi
+
+
+def angular_ripley_H(
+    points: Float[np.ndarray, "N 2"],
+    r: float = 1.0,
+    num_bins: int = 100,
+    sides: Float[np.ndarray, "2"] = np.array([4.0, 4.0]),
+    edge_correction: bool = True,
+):
+    n_points = points.shape[0]
+    sides = np.asarray(sides)
+    vol = np.prod(sides)
+    tree = scspatial.KDTree(points)
+    in_range_inds = tree.query_ball_tree(tree, r)
+
+    bins = np.linspace(-np.pi, np.pi, num_bins)
+    k_angular = np.zeros_like(bins, shape=(len(bins) - 1,))
+
+    for i, point in enumerate(points):
+        in_range_inds[i].remove(i)  # Remove self counting
+        neighbors = points[in_range_inds[i]]
+        displacements, weights = neighbor_distances_and_weights(
+            point, neighbors, sides, edge_correction
+        )
+
+        angles = np.atan2(displacements[:, 1], displacements[:, 0])
+
+        k_angular = (
+            k_angular + np.histogram(angles, bins, weights=weights, density=False)[0]
+        )
+
+    delta_angle = bins[1] - bins[0]
+    lambda_sq_inv = (vol * vol) / (n_points * (n_points - 1))
+    K_angular = (2 * np.pi / delta_angle) * lambda_sq_inv * k_angular
+    H_angular = ripley_L_from_K(K_angular, points.shape[1]) - r
+
+    bin_centers = (bins[:-1] + bins[1:]) / 2
+    return bin_centers, H_angular
 
 
 def angular_ripley_H_3d(
@@ -66,7 +63,7 @@ def angular_ripley_H_3d(
     sides = np.asarray(sides)
     volume = np.prod(sides)
     tree = scspatial.KDTree(points)
-    in_range_indices: list[list[int]] = tree.query_ball_tree(tree, r)
+    in_range_inds: list[list[int]] = tree.query_ball_tree(tree, r)
 
     bins_theta: Float[np.ndarray, " N_theta+1"] = np.linspace(
         -np.pi, np.pi, num_bins[0]
@@ -76,18 +73,12 @@ def angular_ripley_H_3d(
         bins_theta, shape=(num_bins[0] - 1, num_bins[1] - 1)
     )
 
-    for i, point in enumerate(tqdm(points)):
-        in_range_indices[i].remove(i)  # Remove self counting
-        point_neighbors: Float[np.ndarray, "neighbors 3"] = points[in_range_indices[i]]
-        displacements = point_neighbors - point
-
-        if edge_correction:
-            vol_intersection = np.prod(sides - np.abs(displacements), axis=-1)
-            k_per_point: Float[np.ndarray, " neighbors"] = 1 / vol_intersection
-        else:
-            k_per_point: Float[np.ndarray, " neighbors"] = (
-                np.ones(len(point_neighbors)) / volume
-            )
+    for i, point in enumerate(points):
+        in_range_inds[i].remove(i)  # Remove self counting
+        neighbors = points[in_range_inds[i]]
+        displacements, weights = neighbor_distances_and_weights(
+            point, neighbors, sides, edge_correction
+        )
 
         _, points_theta, points_phi = cartesian_to_spherical(displacements)
 
@@ -97,7 +88,7 @@ def angular_ripley_H_3d(
                 points_theta,
                 points_phi,
                 (bins_theta, bins_phi),
-                weights=k_per_point,
+                weights=weights,
                 density=False,
             )[0]
         )
@@ -108,7 +99,6 @@ def angular_ripley_H_3d(
     d_Omega: Float[np.ndarray, " N_phi"] = np.sin(phi) * d_theta * d_phi
 
     K_angular = (4 * np.pi / d_Omega) * lambda_sq_inv * k_angular
-    L_angular = np.cbrt(3 * K_angular / (4 * np.pi))
-    H_angular = L_angular - r
+    H_angular = ripley_L_from_K(K_angular, points.shape[1]) - r
 
     return H_angular, (bins_theta, bins_phi)
