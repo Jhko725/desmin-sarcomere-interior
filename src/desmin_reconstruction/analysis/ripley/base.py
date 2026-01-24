@@ -1,9 +1,28 @@
 import numpy as np
+import scipy.sparse as scsparse
 import scipy.spatial as scspatial
 from jaxtyping import Float
 from tqdm import tqdm
 
 from desmin_reconstruction.utils.math import n_sphere_volume
+
+
+def bin_sparse_distance_matrix(
+    dist_matrix: scsparse.coo_matrix,
+    bin_edges: Float[np.ndarray, " bins+1"],
+    weights: float | np.ndarray = 1.0,
+) -> Float[np.ndarray, "rows bins"]:
+    """Given a sparse COO matrix containing pairwise distances to neighbors within
+    some maximal distance and an monotonically increasing array of distance bin edges,
+    return a matrix that contains weighted histogram of distances per point.
+
+    This function is particularly useful in computing second-order spatial statistics
+    such as Ripley's functions.
+    """
+    bin_idx = np.searchsorted(bin_edges, dist_matrix.data, side="right") - 1
+    bincounts = np.zeros(shape=(dist_matrix.shape[0], len(bin_edges) - 1))
+    np.add.at(bincounts, (dist_matrix.row, bin_idx), weights)
+    return bincounts
 
 
 def neighbor_distances_and_weights(
