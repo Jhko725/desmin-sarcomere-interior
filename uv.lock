@@ -282,6 +282,81 @@ wheels = [
 ]
 
 [[package]]
+name = "bioio"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "bioio-base" },
+    { name = "dask", extra = ["array"] },
+    { name = "numpy" },
+    { name = "ome-types", extra = ["lxml"] },
+    { name = "semver" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/21/29/0534e35d8bcbe24b7626625352acb2d606fb3f290c2e39fa0e1085f08b67/bioio-3.2.0.tar.gz", hash = "sha256:731211b43b3c5438cbf597f915a98dcd1be29814b0a67e5a1e89ab38fe746538", size = 60876 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ae/5f/96a446d850b19d1bdb5bbb0d49eec2efa6b396cd5efb6d1e5d84cf03cad9/bioio-3.2.0-py3-none-any.whl", hash = "sha256:b25b424de47b877de184c14b0d0836f2a9c678b0c36a338eb6e526f0f74fa359", size = 58721 },
+]
+
+[[package]]
+name = "bioio-base"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dask", extra = ["array", "distributed"] },
+    { name = "fsspec" },
+    { name = "numpy" },
+    { name = "ome-types", extra = ["pint"] },
+    { name = "pint" },
+    { name = "xarray" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/05/64a855e25b89384b703255e10c12f0ccaa9862e58f1f73b642d8fbdb696e/bioio_base-3.2.0.tar.gz", hash = "sha256:f935e19ae243e9cdb1c46ae9c5ac2a19343345f6be7a74255e292c7188a37c68", size = 96797 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c4/44/178363ad21c93bb94ac5d9abf03c39fb3a43d5849c97d6a213efbb77f318/bioio_base-3.2.0-py3-none-any.whl", hash = "sha256:ae37c33bfc5fe7efa89603ea678c6ba1a2e0b9c67a7e64377d4c5d1f0a75724a", size = 100971 },
+]
+
+[[package]]
+name = "bioio-ome-tiff"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "bioio-base" },
+    { name = "dask", extra = ["array"] },
+    { name = "fsspec" },
+    { name = "imagecodecs" },
+    { name = "numpy" },
+    { name = "ome-types", extra = ["lxml"] },
+    { name = "pydantic" },
+    { name = "pyyaml" },
+    { name = "tifffile" },
+    { name = "xarray" },
+    { name = "xmlschema" },
+    { name = "zarr" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/49/ba/f6c2ba8421ac0208c8cbb12085d101a4b5f22b40a7f8cf53557afab1d1d4/bioio_ome_tiff-1.1.0.tar.gz", hash = "sha256:c25b88d77e169c19a275a5b376fcf772315395f7c37b732dc0c19c9190bd0b4d", size = 30886 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/43/27/a8be335ce5a996f6efc3f1fbf1b468a05de6eadc5ed521ff10d039878609/bioio_ome_tiff-1.1.0-py3-none-any.whl", hash = "sha256:fa7e5e6a112f5f7613f54281d9702e60d9bf2f95a2f8714f917a8a1e3156350e", size = 24969 },
+]
+
+[[package]]
+name = "bioio-tifffile"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "bioio-base" },
+    { name = "dask", extra = ["array"] },
+    { name = "fsspec" },
+    { name = "imagecodecs" },
+    { name = "numpy" },
+    { name = "tifffile" },
+    { name = "xarray" },
+    { name = "zarr" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f6/5d/a98c43a06ddfe08b5754e6c058f9d854c2493dd8d26809c9f649bc40bf83/bioio-tifffile-1.0.0.tar.gz", hash = "sha256:9ec524ea308b25736f6c6c2086ca7034818bfc5ac0cdc13cf20f0b2d141ee239", size = 23996 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a1/67/961bc883860ab6c76a2f082b97d565a4d13f61966fa11a5a03e5b26f85be/bioio_tifffile-1.0.0-py3-none-any.whl", hash = "sha256:ccbd8b57e79cf695757b5d61f19b373caaa7ce63f9db3c091f9ab47b9980a54e", size = 17944 },
+]
+
+[[package]]
 name = "bleach"
 version = "6.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -544,6 +619,9 @@ wheels = [
 array = [
     { name = "numpy" },
 ]
+distributed = [
+    { name = "distributed" },
+]
 
 [[package]]
 name = "debugpy"
@@ -588,6 +666,9 @@ dependencies = [
     { name = "aicsimageio" },
     { name = "aicspylibczi" },
     { name = "array-api-compat" },
+    { name = "bioio" },
+    { name = "bioio-ome-tiff" },
+    { name = "bioio-tifffile" },
     { name = "cmocean" },
     { name = "colorcet" },
     { name = "einops" },
@@ -599,11 +680,13 @@ dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "ott-jax" },
+    { name = "pillow" },
     { name = "polars" },
     { name = "pyvista", extra = ["jupyter"] },
     { name = "scikit-image" },
     { name = "scikit-learn" },
     { name = "scipy" },
+    { name = "tifffile", extra = ["all"] },
     { name = "tqdm" },
     { name = "trame" },
     { name = "xarray" },
@@ -619,6 +702,9 @@ requires-dist = [
     { name = "aicsimageio", specifier = ">=4.14.0" },
     { name = "aicspylibczi", specifier = ">=3.1.1" },
     { name = "array-api-compat", specifier = ">=1.13.0" },
+    { name = "bioio", specifier = ">=3.2.0" },
+    { name = "bioio-ome-tiff", specifier = ">=1.1.0" },
+    { name = "bioio-tifffile", specifier = ">=1.0.0" },
     { name = "cmocean", specifier = ">=4.0.3" },
     { name = "colorcet", specifier = ">=3.1.0" },
     { name = "einops", specifier = ">=0.8.1" },
@@ -630,11 +716,13 @@ requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.3" },
     { name = "numpy", specifier = ">=2.2.6" },
     { name = "ott-jax", specifier = ">=0.6.0" },
+    { name = "pillow", specifier = ">=11.2.1" },
     { name = "polars", specifier = ">=1.29.0" },
     { name = "pyvista", extras = ["jupyter"], specifier = ">=0.45.2" },
     { name = "scikit-image", specifier = ">=0.25.2" },
     { name = "scikit-learn", specifier = ">=1.7.0" },
     { name = "scipy", specifier = ">=1.16" },
+    { name = "tifffile", extras = ["all"], specifier = ">=2023.2.28" },
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "trame", specifier = ">=3.10.1" },
     { name = "xarray", specifier = ">=2025.9.0" },
@@ -642,6 +730,32 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.0.2" }]
+
+[[package]]
+name = "distributed"
+version = "2025.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "cloudpickle" },
+    { name = "dask" },
+    { name = "jinja2" },
+    { name = "locket" },
+    { name = "msgpack" },
+    { name = "packaging" },
+    { name = "psutil" },
+    { name = "pyyaml" },
+    { name = "sortedcontainers" },
+    { name = "tblib" },
+    { name = "toolz" },
+    { name = "tornado" },
+    { name = "urllib3" },
+    { name = "zict" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d4/df/4974e669d5c166fddc5e39c8e2dcde41fd90c7568e205f7bf861dc49b66c/distributed-2025.7.0.tar.gz", hash = "sha256:5f8ec20d3cdfb286452831c6f9ebee84527e9323256c20dd2938d9c6e62c5c18", size = 1108454 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9e/dc/9f033526ed98b65cda8adbd10b6eeeca0659203f67bd3e065ce172008887/distributed-2025.7.0-py3-none-any.whl", hash = "sha256:51b74526c2bee409ca968ee5532c79de1c1a1713664f5ccf90bdd81f17cfdc73", size = 1015142 },
+]
 
 [[package]]
 name = "einops"
@@ -701,6 +815,30 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/8b/50/4b769ce1ac4071a1ef6d86b1a3fb56cdc3a37615e8c5519e1af96cdac366/fastjsonschema-2.21.1.tar.gz", hash = "sha256:794d4f0a58f848961ba16af7b9c85a3e88cd360df008c59aac6fc5ae9323b5d4", size = 373939 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/90/2b/0817a2b257fe88725c25589d89aec060581aabf668707a8d03b2e9e0cb2a/fastjsonschema-2.21.1-py3-none-any.whl", hash = "sha256:c9e5b7e908310918cf494a434eeb31384dd84a98b57a30bcb1f535015b554667", size = 23924 },
+]
+
+[[package]]
+name = "flexcache"
+version = "0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/b0/8a21e330561c65653d010ef112bf38f60890051d244ede197ddaa08e50c1/flexcache-0.3.tar.gz", hash = "sha256:18743bd5a0621bfe2cf8d519e4c3bfdf57a269c15d1ced3fb4b64e0ff4600656", size = 15816 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/27/cd/c883e1a7c447479d6e13985565080e3fea88ab5a107c21684c813dba1875/flexcache-0.3-py3-none-any.whl", hash = "sha256:d43c9fea82336af6e0115e308d9d33a185390b8346a017564611f1466dcd2e32", size = 13263 },
+]
+
+[[package]]
+name = "flexparser"
+version = "0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/82/99/b4de7e39e8eaf8207ba1a8fa2241dd98b2ba72ae6e16960d8351736d8702/flexparser-0.4.tar.gz", hash = "sha256:266d98905595be2ccc5da964fe0a2c3526fbbffdc45b65b3146d75db992ef6b2", size = 31799 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fe/5e/3be305568fe5f34448807976dc82fc151d76c3e0e03958f34770286278c1/flexparser-0.4-py3-none-any.whl", hash = "sha256:3738b456192dcb3e15620f324c447721023c0293f6af9955b481e91d00179846", size = 27625 },
 ]
 
 [[package]]
@@ -1936,6 +2074,14 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/93/c7/5d63372b13bfe9eaff26d540e7a1d2da5f0b4d82a5cbe634b638f1df61a3/ome_types-0.6.1-py3-none-any.whl", hash = "sha256:128f9bd5f52212cf37dad087ee4a7df939ccbf40a328d986e0bf9ac564abd4e9", size = 245142 },
 ]
 
+[package.optional-dependencies]
+lxml = [
+    { name = "lxml" },
+]
+pint = [
+    { name = "pint" },
+]
+
 [[package]]
 name = "ome-zarr"
 version = "0.11.1"
@@ -2130,6 +2276,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/92/1ca0c3f09233bd7decf8f7105a1c4e3162fb9142128c74adad0fb361b7eb/pillow-11.2.1-cp313-cp313t-win32.whl", hash = "sha256:e0b55f27f584ed623221cfe995c912c61606be8513bfa0e07d2c674b4516d9dd", size = 2335774 },
     { url = "https://files.pythonhosted.org/packages/a5/ac/77525347cb43b83ae905ffe257bbe2cc6fd23acb9796639a1f56aa59d191/pillow-11.2.1-cp313-cp313t-win_amd64.whl", hash = "sha256:36d6b82164c39ce5482f649b437382c0fb2395eabc1e2b1702a6deb8ad647d6e", size = 2681895 },
     { url = "https://files.pythonhosted.org/packages/67/32/32dc030cfa91ca0fc52baebbba2e009bb001122a1daa8b6a79ad830b38d3/pillow-11.2.1-cp313-cp313t-win_arm64.whl", hash = "sha256:225c832a13326e34f212d2072982bb1adb210e0cc0b153e688743018c94a2681", size = 2417234 },
+]
+
+[[package]]
+name = "pint"
+version = "0.25.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flexcache" },
+    { name = "flexparser" },
+    { name = "platformdirs" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5f/74/bc3f671997158aef171194c3c4041e549946f4784b8690baa0626a0a164b/pint-0.25.2.tar.gz", hash = "sha256:85a45d1da8fe9c9f7477fed8aef59ad2b939af3d6611507e1a9cbdacdcd3450a", size = 254467 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/88/550d41e81e6d43335603a960cd9c75c1d88f9cf01bc9d4ee8e86290aba7d/pint-0.25.2-py3-none-any.whl", hash = "sha256:ca35ab1d8eeeb6f7d9942b3cb5f34ca42b61cdd5fb3eae79531553dcca04dda7", size = 306762 },
 ]
 
 [[package]]
@@ -2807,6 +2968,15 @@ wheels = [
 ]
 
 [[package]]
+name = "semver"
+version = "3.0.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/72/d1/d3159231aec234a59dd7d601e9dd9fe96f3afff15efd33c1070019b26132/semver-3.0.4.tar.gz", hash = "sha256:afc7d8c584a5ed0a11033af086e8af226a9c0b206f313e0301f8dd7b6b589602", size = 269730 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/24/4d91e05817e92e3a61c8a21e08fd0f390f5301f1c448b137c57c4bc6e543/semver-3.0.4-py3-none-any.whl", hash = "sha256:9c824d87ba7f7ab4a1890799cec8596f15c1241cb473404ea1cb0c55e4b04746", size = 17912 },
+]
+
+[[package]]
 name = "send2trash"
 version = "1.8.3"
 source = { registry = "https://pypi.org/simple" }
@@ -2852,6 +3022,15 @@ wheels = [
 ]
 
 [[package]]
+name = "sortedcontainers"
+version = "2.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88", size = 30594 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0", size = 29575 },
+]
+
+[[package]]
 name = "soupsieve"
 version = "2.7"
 source = { registry = "https://pypi.org/simple" }
@@ -2872,6 +3051,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/28/e3/55dcc2cfbc3ca9c29519eb6884dd1415ecb53b0e934862d3559ddcb7e20b/stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9", size = 44707 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/7b/ce1eafaf1a76852e2ec9b22edecf1daa58175c090266e9f6c64afcd81d91/stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695", size = 24521 },
+]
+
+[[package]]
+name = "tblib"
+version = "3.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/8a/14c15ae154895cc131174f858c707790d416c444fc69f93918adfd8c4c0b/tblib-3.2.2.tar.gz", hash = "sha256:e9a652692d91bf4f743d4a15bc174c0b76afc750fe8c7b6d195cc1c1d6d2ccec", size = 35046 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/02/be/5d2d47b1fb58943194fb59dcf222f7c4e35122ec0ffe8c36e18b5d728f0b/tblib-3.2.2-py3-none-any.whl", hash = "sha256:26bdccf339bcce6a88b2b5432c988b266ebbe63a4e593f6b578b1d2e723d2b76", size = 12893 },
 ]
 
 [[package]]
@@ -2907,6 +3095,16 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b9/0b/e8123041ebdc361bd5b7b1a9613be4adcbf583befa0a2fc407bc0e71878e/tifffile-2023.2.28.tar.gz", hash = "sha256:2d2baba8dea6609f553fe61853db9a61f715d60ba3bce6a20b5a1ab72407dfed", size = 336265 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/30/b3a70a98b1be0ef881593b7f0ea7fd2aed9f5f3440e90547aa79000a8792/tifffile-2023.2.28-py3-none-any.whl", hash = "sha256:8357cd8ccbdd4378ad4d6b84ffe3ab15b1d96630b1719f576d4de386f45546f1", size = 216374 },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "defusedxml" },
+    { name = "fsspec" },
+    { name = "imagecodecs" },
+    { name = "lxml" },
+    { name = "matplotlib" },
+    { name = "zarr" },
 ]
 
 [[package]]
@@ -3351,4 +3549,13 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/18/c0/46f0b1f3740a6d1c6bf3080ed8a7bce0053ee45a1bc8177446ad14d003c5/zarr-2.15.0.tar.gz", hash = "sha256:3894001c0bb5d68d3d21a0562cc49e6ba14fee7d17ad2be8d088ab301665a4c6", size = 3594788 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/13/be/86e126be33e72a86e82516da6993d2664d68699f6f737c930dc860b840cd/zarr-2.15.0-py3-none-any.whl", hash = "sha256:7296b9f42cdc9096c5349527e71492c1b05ed5464027bfa5d008339796d00b9f", size = 206112 },
+]
+
+[[package]]
+name = "zict"
+version = "3.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d1/ac/3c494dd7ec5122cff8252c1a209b282c0867af029f805ae9befd73ae37eb/zict-3.0.0.tar.gz", hash = "sha256:e321e263b6a97aafc0790c3cfb3c04656b7066e6738c37fffcca95d803c9fba5", size = 33238 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/80/ab/11a76c1e2126084fde2639514f24e6111b789b0bfa4fc6264a8975c7e1f1/zict-3.0.0-py2.py3-none-any.whl", hash = "sha256:5796e36bd0e0cc8cf0fbc1ace6a68912611c1dbd74750a3f3026b9b9d6a327ae", size = 43332 },
 ]
